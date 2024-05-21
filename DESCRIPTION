@@ -1,0 +1,14 @@
+Package: MN
+Type: Package
+Title: Matrix Normal Distribution 
+Version: 1.0
+Date: 2024-05-21
+Authors@R: c( person("Michail", "Tsagris", role = c("aut", "cre"), email = "mtsagris@uoc.gr"),
+              person("Alzeley", "Omar", role = c("ctb"), email = "oazeley@uqu.edu.sa") )
+Author: Michail Tsagris [aut, cre], Alzeley Omar [ctb]
+Maintainer: Michail Tsagris <mtsagris@uoc.gr>
+Depends: R (>= 4.0)
+Imports: Rfast
+Description: Density computation, random matrix generation and maximum likelihood estimation of the matrix normal distribution. References: Pocuca N., Gallaugher M. P., Clark K. M. & McNicholas P. D. (2019). Assessing and Visualizing Matrix Variate Normality. <doi:10.48550/arXiv.1910.02859> and the relevant wikipedia page. 
+License: GPL (>= 2)
+

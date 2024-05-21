@@ -1,0 +1,10 @@
+#useDynLib(pchc, .registration = TRUE)
+
+importFrom("Rfast", matrnorm, eachrow, mahala)
+importFrom("graphics", "abline", "axis", "points")
+importFrom("stats", "ecdf", "knots")
+
+exportPattern("^[[:alpha:]]+")
+exportPattern("^[^\\.]")
+
+export(rmn, dmn, mn.mle, ddplot)
