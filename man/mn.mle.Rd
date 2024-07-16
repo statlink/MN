@@ -14,7 +14,7 @@ mn.mle(X)
 
 \arguments{
 \item{X}{
-A list with k elements (k is the sample size), k matrices of dimension \eqn{n \ times p} each.
+A list with k elements (k is the sample size), k matrices of dimension \eqn{n \times p} each.
 }
 }
 
