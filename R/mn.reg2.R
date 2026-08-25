@@ -1,0 +1,73 @@
+mn.reg2 <- function(Y, x, tol = 1e-6, maxiter = 100, xnew = NULL) {
+
+  tic <- proc.time()
+  k <- length(Y)
+  dm <- dim( Y[[ 1 ]] )
+  n <- dm[1]   ;   p <- dm[2]
+  x <- model.matrix( ~., data = as.data.frame(x) )
+  dx <- dim(x)[2]
+
+  ones <- matrix(1, nrow = n, ncol = 1)
+  tones <- t(ones)
+  xx <- crossprod(x)
+  con <-  - 0.5 * k * n * p * log(2 * pi)
+
+  Ybar <- t( sapply(Y, Rfast::colmeans) )
+  B <- solve( xx, crossprod(x, Ybar) )
+  E <- lapply( 1:k, function(i)  Y[[ i ]] - ones %*% (x[i, ] %*% B) )
+  U <- V <- 0
+  for ( i in 1:k ) {
+    U <- U + tcrossprod( E[[i ]] )
+    V <- V + crossprod( E[[ i ]] )
+  }
+  U <- U / (k * p)   ;   V <- V / (k * n)
+  invU <- solve(U)   ;   invV <- solve(V)
+  ldU <- as.numeric( determinant(U, log = TRUE)$modulus )
+  ldV <- as.numeric( determinant(V, log = TRUE)$modulus )
+  S <- Reduce( '+', lapply( E, function(e)  t(e) %*% invU %*% e ) )
+  tr <- sum( diag( invV %*% S ) )
+  loglik_old <-  -0.5 * k * p * ldU - 0.5 * k * n * ldV - 0.5 * tr
+
+  iter <- 1
+  while ( iter <= maxiter ) {
+    invU <- solve(U)   ;   invV <- solve(V)
+    cU <- sum(invU) # as.numeric(tones %*% invU %*% ones)
+    Z <- t( sapply(Y, function(Yi)  ( tones %*% invU %*% Yi ) / cU) )
+    B <- solve( xx, crossprod(x, Z) )
+    E <- lapply(1:k, function(i)  Y[[ i ]] - ones %*% (x[i, , drop = FALSE] %*% B))
+    U <- 0
+    for ( i in 1:k )  U <- U + E[[ i ]] %*% invV %*% t( E[[ i ]] )
+    U <- U / (k * p)
+    invU_new <- solve(U)
+    V <- 0
+    for ( i in 1:k )  V <- V + t( E[[ i ]] ) %*% invU_new %*% E[[ i ]]
+    V <- V / (k * n)
+
+    invU <- solve(U)   ;   invV <- solve(V)
+    ldU <- as.numeric( determinant(U, log = TRUE)$modulus )
+    ldV <- as.numeric( determinant(V, log = TRUE)$modulus )
+    S <- Reduce( '+', lapply( E, function(e)  t(e) %*% invU %*% e ) )
+    tr <- sum( diag( invV %*% S ) )
+    loglik_new <-  -0.5 * k * p * ldU - 0.5 * k * n * ldV - 0.5 * tr
+
+    if ( abs(loglik_new - loglik_old) / abs(loglik_old) < tol )  break
+    loglik_old <- loglik_new
+    iter <- iter + 1
+  }
+
+  if ( is.null( colnames(x) ) )  rownames(B) <- paste0("X", 1:dx)
+  else rownames(B) <- colnames(x)
+  if ( is.null( colnames( Y[[ 1 ]] ) ) )  colnames(B) <- paste0("Y", 1:p)
+  else  colnames(B) <- colnames( Y[[ 1 ]] )
+
+  est <- NULL
+  if ( !is.null(xnew) ) {
+    xnew <- model.matrix( ~., data = as.data.frame(xnew) )
+    est <- lapply( 1:nrow(xnew), function(i)  ones %*% (xnew[i, ] %*% B) )
+  }
+
+  runtime <- proc.time() - tic
+  list( runtime = runtime, iters = iter, loglik = con + loglik_new, B = B,
+        U = U, V = V, est = est )
+
+}

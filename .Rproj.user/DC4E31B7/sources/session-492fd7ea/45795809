@@ -1,26 +1,27 @@
 {
-    "id": "4D63FCED",
-    "path": "~/GitHub/MN/man/MN-package.Rd",
-    "project_path": "man/MN-package.Rd",
+    "id": "45795809",
+    "path": "~/GitHub/MN/man/mn.reg2.Rd",
+    "project_path": "man/mn.reg2.Rd",
     "type": "r_doc",
     "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1774597578002.0,
+    "created": 1787669790640.0,
     "source_on_save": false,
-    "relative_order": 1,
+    "relative_order": 3,
     "properties": {
+        "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "17,21",
-        "scrollLine": "0"
+        "cursorPosition": "76,2",
+        "scrollLine": "74"
     },
     "folds": "",
-    "lastKnownWriteTime": 1774597585,
+    "lastKnownWriteTime": 1787670208,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1774597585293,
+    "last_content_update": 1787670208870,
     "read_only": false,
     "read_only_alternatives": []
 }

@@ -1,23 +1,20 @@
-\name{Maximum likelihood estimation of the matrix normal distribution}
+\name{Maximum likelihood estimation of the the matrix normal distribution}
 \alias{mn.mle}
 \title{
-Maximum likelihood estimation of the matrix normal distribution
+Maximum likelihood estimation of the the matrix normal distribution
 }
 
 \description{
-Maximum likelihood estimation of the matrix normal distribution.
+Maximum likelihood estimation of the the matrix normal distribution.
 }
 
 \usage{
-mn.mle(Y, tol = 1e-6)
+mn.mle(X)
 }
 
 \arguments{
-\item{Y}{
+\item{X}{
 A list with k elements (k is the sample size), k matrices of dimension \eqn{n \times p} each.
-}
-\item{tol}{
-The tolerance value to terminate the iterative algorithm.
 }
 }
 
@@ -72,6 +69,6 @@ R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
 M <- as.matrix(iris[1:8, 1:4])
 U <- cov( matrix( rnorm(100 * 8), ncol = 8 ) )
 V <- cov( iris[1:50, 1:4] )
-Y <- rmn(200, M, U, V)
-mod <- mn.mle(Y)
+X <- rmn(200, M, U, V)
+mod <- mn.mle(X)
 }

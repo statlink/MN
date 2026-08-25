@@ -14,8 +14,8 @@ Density computation, random matrix generation and maximum likelihood estimation 
 \tabular{ll}{
 Package: \tab MN\cr
 Type: \tab Package\cr
-Version: \tab 1.1 \cr
-Date: \tab 2026-03-27 \cr
+Version: \tab 1.2 \cr
+Date: \tab 2026-08-25 \cr
 }
 }
 

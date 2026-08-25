@@ -1,11 +1,11 @@
-\name{Maximum likelihood estimation of the matrix normal distribution}
+\name{Maximum likelihood estimation of the the matrix normal distribution}
 \alias{mn.mle}
 \title{
-Maximum likelihood estimation of the matrix normal distribution
+Maximum likelihood estimation of the the matrix normal distribution
 }
 
 \description{
-Maximum likelihood estimation of the matrix normal distribution.
+Maximum likelihood estimation of the the matrix normal distribution.
 }
 
 \usage{

@@ -1,29 +1,39 @@
-\name{Maximum likelihood estimation of the matrix normal distribution}
-\alias{mn.mle}
+\name{Regression with a matrix of covariates}
+\alias{mn.reg2}
 \title{
-Maximum likelihood estimation of the matrix normal distribution
+Regression with a matrix of covariates
 }
 
 \description{
-Maximum likelihood estimation of the matrix normal distribution.
+Regression with a matrix of covariates.
 }
 
 \usage{
-mn.mle(Y, tol = 1e-6)
+mn.reg2(Y, x, tol = 1e-6, maxiter = 100, xnew = NULL)
 }
 
 \arguments{
 \item{Y}{
 A list with k elements (k is the sample size), k matrices of dimension \eqn{n \times p} each.
 }
+\item{x}{
+A matrix with covariates, where the i-th row represents the covariate vector is related
+to the i-th response matrix Y.
+}
 \item{tol}{
 The tolerance value to terminate the iterative algorithm.
 }
+\item{maxiter}{
+The maximum number of iterations allowed.
+}
+\item{xnew}{
+If you have new x values and want to predict the values of the response matrices pass them here.
+}
 }
 
-%\details{
-%The constraint is that all beta coefficients (including the constant) are positive.
-%}
+\details{
+The function performs matrix normal regression with a matrix of covariates.
+}
 
 \value{
 A list including:
@@ -36,14 +46,17 @@ The number of iterations required for the estimation of the U and V matrices.
 \item{loglik}{
 The log-likelihood value.
 }
-\item{M}{
-The estimated mean matrix of the distribution, a numerical matrix of dimensions \eqn{n \times p}.
+\item{B}{
+The estimated matrix of coefficients.
 }
 \item{U}{
 The estimated covariance matrix associated with the rows, a numerical matrix of dimensions \eqn{n \times n}.
 }
 \item{V}{
 The estimated covariance matrix associated with the columns, a numerical matrix of dimensions \eqn{p \times p}.
+}
+\item{est}{
+The estimated matrix responses for the new x values, otherwise this is NULL.
 }
 }
 
@@ -72,6 +85,8 @@ R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
 M <- as.matrix(iris[1:8, 1:4])
 U <- cov( matrix( rnorm(100 * 8), ncol = 8 ) )
 V <- cov( iris[1:50, 1:4] )
-Y <- rmn(200, M, U, V)
-mod <- mn.mle(Y)
+Y <- rmn(150, M, U, V)
+x <- iris[, 1:2]
+colnames(x) <- c("sepal-length", "sepal-width")
+mod <- mn.reg2(Y, x)
 }
