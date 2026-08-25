@@ -1,20 +1,27 @@
-\name{Regression with a matrix of covariates}
+\name{Matrix normal regression}
+\alias{mn.reg}
 \alias{mn.reg2}
 \title{
-Regression with a matrix of covariates
+Matrix normal regression
 }
 
 \description{
-Regression with a matrix of covariates.
+Matrix normal regression.
 }
 
 \usage{
+mn.reg(Y, X, tol = 1e-6, maxiter = 100, xnew = NULL)
 mn.reg2(Y, x, tol = 1e-6, maxiter = 100, xnew = NULL)
 }
 
 \arguments{
 \item{Y}{
 A list with k elements (k is the sample size), k matrices of dimension \eqn{n \times p} each.
+}
+\item{X}{
+A list with the matrix covariates. A list with k elements (k is the sample size),
+k matrices of dimension \eqn{n \times dx} each, each matrix is the matrix covariate to the
+matrix response.
 }
 \item{x}{
 A matrix with covariates, where the i-th row represents the covariate vector is related
@@ -32,7 +39,8 @@ If you have new x values and want to predict the values of the response matrices
 }
 
 \details{
-The function performs matrix normal regression with a matrix of covariates.
+The function mn.reg() performs matrix normal regression with matrix covariates.
+The function mn.reg2() performs matrix normal regression with a matrix of covariates.
 }
 
 \value{
@@ -89,4 +97,12 @@ Y <- MN::rmn(150, M, U, V)
 x <- iris[, 1:2]
 colnames(x) <- c("sepal-length", "sepal-width")
 mod <- mn.reg2(Y, x)
+
+
+M <- as.matrix(iris[1:8, 1:4])
+U <- cov( matrix( rnorm(100 * 8), ncol = 8 ) )
+V <- cov( iris[1:50, 1:4] )
+X <- MN::rmn(150, M/3, U, V)
+
+mod <- mn.reg(Y, X)
 }
