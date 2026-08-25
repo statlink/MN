@@ -4,6 +4,7 @@ mn.reg <- function(Y, X, tol = 1e-6, max_iter = 100, Xnew = NULL) {
   k <- length(Y)
   dm <- dim( Y[[ 1 ]] )
   n <- dm[1]   ;   p <- dm[2]
+  X <- lapply( X, function(x)  model.matrix( ~ ., data = as.data.frame(x) ) )
   dx <- ncol( X[[ 1 ]] )[2]
 
   A0 <- Reduce( '+', lapply(X, crossprod) )
