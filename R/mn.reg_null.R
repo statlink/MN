@@ -26,7 +26,7 @@ mn.reg_null <- function(Y, tol = 1e-6, maxiter = 100) {
   S <- Reduce( '+', lapply( E, function(e)  t(e) %*% invU %*% e ) )
   tr <- sum( diag( invV %*% S ) )
   loglik_old <- -0.5 * k * p * ldU - 0.5 * k * n * ldV - 0.5 * tr
-  con <-  -0.5 * k * n * p * log(2 * pi)
+  con <-  - 0.5 * k * n * p * log(2 * pi)
 
   iter <- 1
   while ( iter <= maxiter ) {
@@ -50,10 +50,9 @@ mn.reg_null <- function(Y, tol = 1e-6, maxiter = 100) {
     ldV <- as.numeric( determinant(V, logarithm = TRUE)$modulus )
     S <- Reduce( '+', lapply( E, function(e)  t(e) %*% invU %*% e ) )
     tr <- sum( diag(invV %*% S) )
-    loglik_new <- -0.5 * k * p * ldU - 0.5 * k * n * ldV - 0.5 * tr
+    loglik_new <-  - 0.5 * k * p * ldU - 0.5 * k * n * ldV - 0.5 * tr
 
-    # Relative change convergence
-    if (abs( loglik_new - loglik_old) / abs(loglik_old) < tol )  break
+    if ( abs( loglik_new - loglik_old) / abs(loglik_old) < tol )  break
     loglik_old <- loglik_new
     iter <- iter + 1
   }
