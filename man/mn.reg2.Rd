@@ -77,7 +77,7 @@ R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
 %}
 
 \seealso{
-\code{\link{dmn}, \link{rmn}, \link{ddplot}
+\code{\link{mn.mle}
 }
 }
 
@@ -85,7 +85,7 @@ R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
 M <- as.matrix(iris[1:8, 1:4])
 U <- cov( matrix( rnorm(100 * 8), ncol = 8 ) )
 V <- cov( iris[1:50, 1:4] )
-Y <- rmn(150, M, U, V)
+Y <- MN::rmn(150, M, U, V)
 x <- iris[, 1:2]
 colnames(x) <- c("sepal-length", "sepal-width")
 mod <- mn.reg2(Y, x)
