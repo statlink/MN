@@ -38,7 +38,8 @@ If you have new X values (list of matrices or a list with a single matrix) and w
 to predict the values of the response matrices pass them here.
 }
 \item{xnew}{
-If you have new x values (matrix or vector) and want to predict the values of the response matrices pass them here.
+If you have new x values (matrix or vector) and want to predict the values of the
+response matrices pass them here.
 }
 }
 
@@ -62,10 +63,12 @@ The log-likelihood value.
 The estimated matrix of coefficients.
 }
 \item{U}{
-The estimated covariance matrix associated with the rows, a numerical matrix of dimensions \eqn{n \times n}.
+The estimated covariance matrix associated with the rows, a numerical matrix of
+dimensions \eqn{n \times n}.
 }
 \item{V}{
-The estimated covariance matrix associated with the columns, a numerical matrix of dimensions \eqn{p \times p}.
+The estimated covariance matrix associated with the columns, a numerical matrix
+of dimensions \eqn{p \times p}.
 }
 \item{est}{
 The estimated matrix responses for the new x values, otherwise this is NULL.
@@ -75,7 +78,8 @@ The estimated matrix responses for the new x values, otherwise this is NULL.
 \references{
 https://en.wikipedia.org/wiki/Matrix_normal_distribution#Definition
 
-Pocuca N., Gallaugher M. P., Clark K. M. & McNicholas P. D. (2019). Assessing and Visualizing Matrix Variate Normality. arXiv:1910.02859.
+Pocuca N., Gallaugher M. P., Clark K. M. & McNicholas P. D. (2019).
+Assessing and Visualizing Matrix Variate Normality. arXiv:1910.02859.
 }
 
 \author{
