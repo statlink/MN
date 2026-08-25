@@ -5,7 +5,7 @@ mn.reg <- function(Y, X, tol = 1e-6, maxiter = 100, Xnew = NULL) {
   dm <- dim( Y[[ 1 ]] )
   n <- dm[1]   ;   p <- dm[2]
   X <- lapply( X, function(x)  model.matrix( ~ ., data = as.data.frame(x) ) )
-  dx <- dim( X[[ 1 ]] )[2]
+  dx <- ncol( X[[ 1 ]] )[2]
 
   A0 <- Reduce( '+', lapply(X, crossprod) )
   B0 <- Reduce( '+', lapply( 1:k, function(i)  t( X[[ i ]]) %*% Y[[ i ]] ) )

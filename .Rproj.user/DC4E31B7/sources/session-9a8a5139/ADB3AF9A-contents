@@ -1,6 +1,7 @@
 \name{Matrix normal regression}
 \alias{mn.reg}
 \alias{mn.reg2}
+\alias{mn.reg_null}
 \title{
 Matrix normal regression
 }
@@ -12,6 +13,7 @@ Matrix normal regression.
 \usage{
 mn.reg(Y, X, tol = 1e-6, maxiter = 100, Xnew = NULL)
 mn.reg2(Y, x, tol = 1e-6, maxiter = 100, xnew = NULL)
+mn.reg_null(Y, tol = 1e-6, maxiter = 100)
 }
 
 \arguments{
@@ -41,6 +43,8 @@ to predict the values of the response matrices pass them here.
 If you have new x values (matrix or vector) and want to predict the values of the
 response matrices pass them here.
 }
+
+The mn.reg_null() functon
 }
 
 \details{
@@ -104,7 +108,7 @@ V <- cov( iris[1:50, 1:4] )
 Y <- MN::rmn(150, M, U, V)
 x <- iris[, 1:2]
 colnames(x) <- c("sepal-length", "sepal-width")
-mod <- mn.reg2(Y, x)
+mod2 <- mn.reg2(Y, x)
 
 
 M <- as.matrix(iris[1:8, 1:4])

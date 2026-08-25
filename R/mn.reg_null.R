@@ -1,11 +1,12 @@
-mn.reg <- function(Y, X, tol = 1e-6, maxiter = 100, Xnew = NULL) {
+mn.reg_null <- function(Y, tol = 1e-6, maxiter = 100) {
 
   tic <- proc.time()
   k <- length(Y)
   dm <- dim( Y[[ 1 ]] )
   n <- dm[1]   ;   p <- dm[2]
-  X <- lapply( X, function(x)  model.matrix( ~ ., data = as.data.frame(x) ) )
-  dx <- dim( X[[ 1 ]] )[2]
+  X <- list()
+  ones <- matrix(1, nrow = n, ncol = 1)
+  for ( i in 1:k )  X[[ i ]] <- ones
 
   A0 <- Reduce( '+', lapply(X, crossprod) )
   B0 <- Reduce( '+', lapply( 1:k, function(i)  t( X[[ i ]]) %*% Y[[ i ]] ) )
@@ -57,16 +58,7 @@ mn.reg <- function(Y, X, tol = 1e-6, maxiter = 100, Xnew = NULL) {
     iter <- iter + 1
   }
 
-  if ( is.null( colnames( X[[ 1 ]] ) ) )  rownames(B) <- paste0("X", 1:dx)
-  else  rownames(B) <- colnames( X[[ 1 ]] )
-  if ( is.null( colnames( Y[[ 1 ]] ) ) )  colnames(B) <- paste0("Y", 1:p)
-  else  colnames(B) <- colnames( Y[[ 1 ]] )
-
-  est <- NULL
-  if ( !is.null(Xnew) )  est <- lapply( Xnew, function(x) x %*% B )
-
   runtime <- proc.time() - tic
 
-  list( runtime = runtime, iters = iter, loglik = con + loglik_new, B = B,
-    U = U, V = V, est = est )
+  list( runtime = runtime, iters = iter, loglik = con + loglik_new )
 }
