@@ -1,27 +1,27 @@
 {
-    "id": "0469A629",
-    "path": "~/GitHub/MN/man/mn.ttest.Rd",
-    "project_path": "man/mn.ttest.Rd",
-    "type": "r_doc",
+    "id": "A39F1494",
+    "path": "~/GitHub/MN/R/mn.ttest.R",
+    "project_path": "R/mn.ttest.R",
+    "type": "r_source",
     "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1787726942919.0,
+    "created": 1787726159177.0,
     "source_on_save": false,
-    "relative_order": 3,
+    "relative_order": 1,
     "properties": {
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "86,15",
-        "scrollLine": "66"
+        "cursorPosition": "8,59",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1787727226,
+    "lastKnownWriteTime": 1787727039,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1787727226636,
+    "last_content_update": 1787727039691,
     "read_only": false,
     "read_only_alternatives": []
 }
