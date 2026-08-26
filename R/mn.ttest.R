@@ -5,8 +5,8 @@ mn.ttest <- function(Y1, Y2, tol = 1e-6, maxiter = 100) {
   for ( i in 1:length(Y1) )  X1[[ i ]] <- matrix(0, nrow = dm[1], ncol = 1 )
   for ( i in 1:length(Y2) )  X2[[ i ]] <- matrix(1, nrow = dm[1], ncol = 1 )
   X <- c(X1, X2)
-  stat <- 2 * ( MN::mn.reg(Y, X, tol = tol, maxit = maxit)$loglik -
-                MN::mn.reg_null(Y, tol = tol, maxit = maxit)$loglik )
+  stat <- 2 * ( MN::mn.reg(Y, X, tol = tol, maxiter = maxiter)$loglik -
+                MN::mn.reg_null(Y, tol = tol, maxiter = maxiter)$loglik )
   pvalue <- pchisq(stat, dm[2], lower.tail = FALSE)
   statistic <- stat  ;   names(statistic) <- "LR-test statistic"
   parameter <- dm[2]     ;   names(parameter) <- "df"
