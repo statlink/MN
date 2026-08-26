@@ -1,0 +1,120 @@
+\name{Matrix normal regression}
+\alias{mn.reg}
+\alias{mn.reg2}
+\alias{mn.reg_null}
+\title{
+Matrix normal regression
+}
+
+\description{
+Matrix normal regression.
+}
+
+\usage{
+mn.reg(Y, X, tol = 1e-6, maxiter = 100, Xnew = NULL)
+mn.reg2(Y, x, tol = 1e-6, maxiter = 100, xnew = NULL)
+mn.reg_null(Y, tol = 1e-6, maxiter = 100)
+}
+
+\arguments{
+\item{Y}{
+A list with k elements (k is the sample size), k matrices of dimension \eqn{n \times p} each.
+}
+\item{X}{
+A list with the matrix covariates. A list with k elements (k is the sample size),
+k matrices of dimension \eqn{n \times dx} each, each matrix is the matrix covariate to the
+matrix response.
+}
+\item{x}{
+A matrix with covariates, where the i-th row represents the covariate vector is related
+to the i-th response matrix Y.
+}
+\item{tol}{
+The tolerance value to terminate the iterative algorithm.
+}
+\item{maxiter}{
+The maximum number of iterations allowed.
+}
+\item{Xnew}{
+If you have new X values (list of matrices or a list with a single matrix) and want
+to predict the values of the response matrices pass them here.
+}
+\item{xnew}{
+If you have new x values (matrix or vector) and want to predict the values of the
+response matrices pass them here.
+}
+}
+
+\details{
+The function mn.reg() performs matrix normal regression with matrix covariates.
+The function mn.reg2() performs matrix normal regression with a matrix of covariates.
+The function mn.reg_null() performs matrix normal regression with the constant only. This is useful
+for performing a log-likelihood ratio test of a regression model against the constant term.
+}
+
+\value{
+A list including:
+\item{runtime}{
+The runtime required for the whole fitting procedure.
+}
+\item{iters}{
+The number of iterations required for the estimation of the U and V matrices.
+}
+\item{loglik}{
+The log-likelihood value.
+}
+\item{B}{
+The estimated matrix of coefficients.
+}
+\item{U}{
+The estimated covariance matrix associated with the rows, a numerical matrix of
+dimensions \eqn{n \times n}.
+}
+\item{V}{
+The estimated covariance matrix associated with the columns, a numerical matrix
+of dimensions \eqn{p \times p}.
+}
+\item{est}{
+The estimated matrix responses for the new x values, otherwise this is NULL.
+}
+}
+
+\references{
+https://en.wikipedia.org/wiki/Matrix_normal_distribution#Definition
+
+Pocuca N., Gallaugher M. P., Clark K. M. & McNicholas P. D. (2019).
+Assessing and Visualizing Matrix Variate Normality. arXiv:1910.02859.
+}
+
+\author{
+Michail Tsagris.
+
+R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
+}
+
+%\note{
+%%  ~~further notes~~
+%}
+
+\seealso{
+\code{\link{mn.mle}
+}
+}
+
+\examples{
+M <- as.matrix(iris[1:8, 1:4])
+U <- cov( matrix( rnorm(100 * 8), ncol = 8 ) )
+V <- cov( iris[1:50, 1:4] )
+Y <- MN::rmn(150, M, U, V)
+x <- iris[, 1:2]
+colnames(x) <- c("sepal-length", "sepal-width")
+mod2 <- mn.reg2(Y, x)
+
+
+M <- as.matrix(iris[1:8, 1:4])
+U <- cov( matrix( rnorm(100 * 8), ncol = 8 ) )
+V <- cov( iris[1:50, 1:4] )
+X <- MN::rmn(150, M/3, U, V)
+
+mod <- mn.reg(Y, X)
+}

@@ -1,11 +1,20 @@
-mn.ttest <- function(Y1, Y2) {
+mn.ttest <- function(Y1, Y2, tol = 1e-6, maxit = 100) {
   Y <- c(Y1, Y2)
-  X1 <- X2 <- list
-  dm <- dim(Y[[ 1 ]])
+  X1 <- Y1   ;   X2 <- Y2
+  dm <- dim( Y1[[ 1 ]] )
   for ( i in 1:length(Y1) )  X1[[ i ]] <- matrix(0, nrow = dm[1], ncol = 1 )
   for ( i in 1:length(Y2) )  X2[[ i ]] <- matrix(1, nrow = dm[1], ncol = 1 )
   X <- c(X1, X2)
-  stat <- 2 * ( MN::mn.reg(Y, X)$loglik - MN::mn.reg_null(Y)$loglik )
+  stat <- 2 * ( MN::mn.reg(Y, X, tol = tol, maxit = maxit)$loglik -
+                MN::mn.reg_null(Y, tol = tol, maxit = maxit)$loglik )
   pvalue <- pchisq(stat, dm[2], lower.tail = FALSE)
-  res <- (stat, pvalue)
+  statistic <- stat  ;   names(statistic) <- "LR-test statistic"
+  parameter <- dm[2]     ;   names(parameter) <- "df"
+  alternative <- "The mean matrices differ"
+  method <- "Log-likelihood ratio test for equality of mean matrices"
+  data.name <- c("data ", "groups")
+  result <- list( statistic = statistic, parameter = parameter, p.value = pvalue,
+                  alternative = alternative, method = method, data.name = data.name )
+  class(result) <- "htest"
+  return(result)
 }
