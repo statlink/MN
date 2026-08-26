@@ -42,6 +42,7 @@ mn.mle <- function(Y, tol = 1e-6) {
   ldV <- as.numeric( determinant(V2, logarithm = TRUE)$modulus )
   loglik <-  - (k * n * p / 2) * (log(2 * pi) + 1) - (k * p / 2) * ldU - (k * n / 2) * ldV
 
+  colnames(U) <- rownames(U) <- rownames( Y[[ 1 ]] )
   runtime <- proc.time() - tic
 
   list(runtime = runtime, iters = i, loglik = loglik, M = M, U = U2, V = V2)
