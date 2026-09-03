@@ -1,0 +1,208 @@
+## if condition
+
+x <- iris[, 1]
+
+y <- 0
+if ( x[1] < 0 ) {
+  y <- 5
+}
+
+y <- 0
+if ( x[1] < 0  &  x[2] > 0 ) {
+  y <- 5
+}
+
+y <- 0
+if ( x[1] < 0  |  x[2] > 0 ) {
+  y <- 5
+}
+
+
+## if else
+y <- 0
+if ( x[1] < 0 ) {
+  y <- 5
+} else {
+  y <- 3
+}
+
+
+x <- iris[, 5]
+y <- 0
+if ( x[1] == "setosa" ) {
+  y <- 5
+}
+if ( x[1] != "setosa" ) {
+  y <- 3
+}
+
+x <- iris[, 5]
+y <- 0
+if ( x[1] == "setosa" ) {
+  y <- 5
+} else {
+  y <- 3
+}
+
+## not so good
+x <- iris[, 5]
+y <- 0
+if ( x[1] == "setosa" ) {
+  y <- 5
+} else {
+  if ( x[1] == "versicolor" ) {
+    y <- 3
+  } else {
+    if ( x[1] == "virginica" ) {
+      y <- 2
+    }
+  }
+}
+
+## better
+x <- iris[, 5]
+y <- 0
+if ( x[1] == "setosa" ) {
+  y <- 5
+}
+if ( x[1] == "versicolor" ) {
+  y <- 3
+}
+if ( x[1] == "virginica" ) {
+  y <- 2
+}
+
+## probably better
+x <- iris[, 5]
+y <- 0
+if ( x[1] == "setosa" ) {
+  y <- 5
+} else if ( x[1] == "versicolor" ) {
+  y <- 3
+} else if ( x[1] == "virginica" ) {
+  y <- 2
+}
+
+
+## for loop
+
+x <- iris[, 1]
+sum(x)
+
+s <- 0
+for ( i in 1:length(x) ) {
+  s <- s + x[i]
+}
+s
+
+
+## measure the computational time
+x <- rnorm(10^6)
+
+system.time( sum(x) ) ## see the elapsed time
+
+tic <- proc.time()
+s <- 0
+for ( i in 1:length(x) ) {
+  s <- s + x[i]
+}
+proc.time() - tic  ## see the elapsed time
+
+  x <- rnorm(10^6)
+
+tic <- proc.time()
+for ( i in 1:10 ) {
+  s <- 0
+  for ( j in 1:length(x) ) {
+    s <- s + x[j]
+  }
+} ## end for (i in 1:10)
+proc.time() - tic  ## see the elapsed time
+
+x <- rnorm(10^6)
+
+tic <- proc.time()
+for ( i in 1:10 ) {
+  sum(x)
+}
+proc.time() - tic  ## see the elapsed time
+
+
+
+x <- as.matrix( iris[, 1:4] )
+
+## stupid way
+y <- x
+## altenrative way
+y <- matrix(nrow = 150, ncol = 4)
+for ( i in 1:dim(x)[1] ) {
+  y[i, ] <- x[i, ] / sum(x[i, ])
+}
+
+## optimal way
+library(Rfast)
+y <- x / rowsums(x)
+
+m <- colmeans(x)
+s <- colVars(x, std = TRUE)
+z <- (x - m)/s ## wrong standardisation
+colmeans(z)
+colVars(z)
+
+z <- t( ( t(x) - m )/s )  ## correct standardisation
+colmeans(z)
+colVars(z)
+
+## standardisation with for loop
+m <- numeric(4)
+s <- numeric(4)
+z <- x
+for (i in 1:4) {
+  m[i] <- mean(x[, i])
+  s[i] <- sd(x[, i])
+}
+for (i in 1:150) {
+  z[i, ] <- (x[i, ] - m) / s
+}
+
+## more elegant for loops
+m <- apply(x, 2, mean) ## colmeans(x)
+s <- apply(x, 2, sd)  ## colVars(x, std = TRUE)
+
+m <- apply(x, 1, mean) ## rowmeans(x)
+s <- apply(x, 1, sd) ## rowsVars(x, std = TRUE)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,168 @@
+######
+y <- iris[, 1]
+x <- iris[, -1]
+a <- lm(y~., x)
+summary(a)
+summary(a)[[ 4 ]] ## matrix of betas, their standard errors
+## their t-statistic, their p-values
+b <- summary(a)[[ 4 ]]
+class(b)
+b[, 4]  ## p-values of each beta coefficient
+
+a0 <- lm(y~., x[, -1])
+test <- anova(a0, a)
+summary(test)
+test[[ 6 ]][2] ## p-value
+test$"Pr(>F)"[2]
+######
+
+
+
+for ( i in 1:100 ) {
+  x <- 4
+  # if (x >0) {
+  #  i <- i - 1
+  # }
+  if ( x == 0 )  i <- i - 1  ## one command in one line after if
+}
+
+
+## while command instead of if
+x <-  - 10
+while ( x < 0 ) {
+  x <- x + 1
+}
+
+## set counter
+x <-  -10
+i <- 0
+while ( x < 0 ) {
+  i <- i + 1
+  x <- x + 1
+}
+
+
+
+x <- 10
+while (x > 0 ) {  ## it will never stop
+  x <- x^10
+}
+
+
+x <- 10
+i <- 0
+while (x > 0 & is.finite(x) ) {  ## it will never stop
+  x <- x^10
+  i <- i + 1
+}
+
+
+## square root of any number using while
+a <- 5874.45
+x <- NULL
+x[1] <- 1
+x[2] <- 0.5 *( x[1] + a/x[1] )
+i <- 2
+while ( abs(x[i] - x[i - 1]) > 1e-7 ) {
+  i <- i + 1
+  x[i] <- 0.5 * ( x[i - 1] + a / x[i - 1] )
+}
+sqrt(a)
+
+
+
+x <- NULL
+a <- 54654
+x[1] <- 240
+x[2] <- 0.5 * ( x[1] + a / x[1] )
+i <- 2
+while ( abs(x[i] - x[i - 1]) > 1e-7 ) {
+  i <- i + 1
+  x[i] <- 0.5 * ( x[i - 1] + a / x[i - 1] )
+}
+
+
+## while nested within a for
+a <- c(400, 600, 6700)
+sqa <- numeric( 3 )
+for ( i in 1:3 ) {
+
+  x <- NULL
+  x[1] <- a[i]/2
+  x[2] <- 0.5 * ( x[1] + a[i] / x[1] )
+  j <- 2
+  while ( abs(x[j] - x[j - 1]) > 1e-7 ) {
+    j <- j + 1
+    x[j] <- 0.5 * ( x[j - 1] + a[i] / x[j - 1] )
+  } ## end while ( abs(x[j] - x[j - 1]) > 1e-7 ) {
+
+  sqa[i] <- x[j]
+
+} ## end for ( i in 1:3 ) {
+
+
+
+## while nested within a for
+## more general code for an arbitrary number of values
+a <- c(400, 600, 6700, 100, 345, 566, 123, 5678996)
+sqa <- numeric( length(a) )
+for ( i in 1:length(a) ) {
+  x <- NULL
+  x[1] <- a[i]/2
+  x[2] <- 0.5 * ( x[1] + a[i] / x[1] )
+  j <- 2
+  while ( abs(x[j] - x[j - 1]) > 1e-7 ) {
+    j <- j + 1
+    x[j] <- 0.5 * ( x[j - 1] + a[i] / x[j - 1] )
+  } ## end while ( abs(x[j] - x[j - 1]) > 1e-7 ) {
+  sqa[i] <- x[j]
+} ## end for ( i in 1:3 ) {
+
+
+## functions
+## linear regression
+linreg <- function(x, y) {
+
+  ## x can be a vector or a matrix
+  ## y must be a vector
+
+  x <- cbind(1, x) ## design matrix
+
+  n <- dim(x)[1]
+  p <- dim(x)[2]
+  #betas <- solve( crossprod(x), crossprod(x, y) )  ## (X^T * X)^(-1) * X^T * Y
+  invxx <- solve( crossprod(x) )
+  betas <- invxx %*% crossprod(x, y)
+  yhat <- as.vector( x %*% betas )
+  res <- y - yhat
+  sse <- sum(res^2)
+  sigma2 <- sse / (n - p)
+  ## var of betas is sigma2 * (X^T * X) ^(-1)
+  sebetas <- sqrt( sigma2 * diag( invxx ) )
+  tstats <- betas / sebetas
+  pvalues <- 2 * pt( abs(tstats), n - p, lower.tail = FALSE )
+  sst <- sum( (y - mean(y) )^2 )
+  r2 <- 1 - sse / sst
+  pinakas <- cbind(betas, sebetas, tstats, pvalues)
+  colnames(pinakas) <- c( "betas", "se of betas", "t-statistics", "p-values" )
+
+  list(pinakas = pinakas, variance = sigma2, r.square = r2, yhat = yhat, residuals = res)
+}
+
+y <- iris[, 1]
+x <- iris[, 2]
+a1 <- linreg(x, y)
+a2 <- lm(y ~ x)
+
+a1$pinakas
+a1$r2
+sqrt( a1$sigma2 )
+summary(a2)
+
+
+
+
+
+
+
+

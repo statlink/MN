@@ -1,0 +1,200 @@
+## t-test
+
+## Antonis
+Wtest <- function(x1,x2){
+         mx1 <- mean(x1)
+         mx2 <- mean(x2)
+         vx1 <- var(x1)
+         vx2 <- var(x2)
+         n1  <- length(x1)
+         n2  <- length(x2)
+         ee  <- (vx1/n1)+(vx2/n2)
+         sdw <- sqrt(ee)
+         t   <- (mx1 - mx2)/sdw 
+         dfa <-  ee^2
+         dfp <- ( ( vx1 / n1 )^2 ) / (n1 - 1) + ( ( vx2 / n2 )^2 )/(n2-1)
+         df  <-  dfa/dfp
+         out <- list( "tstat-Welch"=t , "degrees of freedom"=df)
+         out 
+}
+         
+
+## Christos         
+library(Rfast) ## we need this for Var         
+      
+tau <- function(x, y) {
+
+  n1 <- length(x)
+  n2 <- length(y)
+  sd1 <- Var(x)
+  sd2 <- Var(y)
+  s_d <- sqrt( sd1/n1 + sd2/n2) # s_delta
+
+  defre <- s_d^4 / ( ( ( sd1/n1 )^2 ) / (n1-1) + (sd2/n2)^2 / (n2-1) )
+
+  ti <- ( mean(x) - mean(y) ) / s_d
+
+  list(ti = ti, defre = defre)
+}
+
+
+## Pavlos
+tsttest <- function(x, y) {
+
+  nx <- length(x)
+  ny <- length(y)
+  xbar <- mean(x)
+  ybar <- mean(y)
+  sdelta <- sqrt( var(x)/nx + var(y)/length(y) )
+  tstt<-(xbar - ybar)/sdelta
+  dfyyst<- sdelta^4 / ( ( var(x)/nx )^2 / ( length(x)-1 )  + ( var(y)/length(y) )^2 /( length(y)-1 ) )
+  list(stat=tstt, dfyyst = dfyyst)
+}
+
+
+## Giorgos
+Welch <- function(a,b){
+meanA <- mean(a)
+meanB <- mean(b)
+
+na <- length(a)
+nb <- length(b)
+
+vara <- var(a)
+varb <- var(b)
+sds <- sqrt( (vara/na)+ (varb/nb) )
+
+t <- (meanA - meanB)/ sds
+
+d.f <- ( vara/na + varb/nb ) ^2 / ((vara/na) ^2/(na-1) + (varb /nb) ^2/(nb-1))
+list(t=t, d.f=d.f)
+} 
+
+## test
+set.seed(1234)
+x <- rnorm(20)
+y <- rnorm(30)
+test <- Welch(x, y)
+stat <- test$t
+d.f <- test$d.f
+## p-value = 2 * ( 1 - P(T <= abs(t), df) )
+pvalue <- 2 * ( 1 - pt( abs(stat), d.f ) )
+t.test(x, y) ## R's built-in t-test
+
+
+
+### Many t-tests
+## Antonis
+pame <- function(x,y){
+ stilx <- dim(x)[2]
+ stily <- dim(y)[2]
+ n1  <- dim(x)[1]
+ n2  <- dim(y)[2]
+
+     ti    <- matrix()
+     df    <- matrix()
+     pv    <- matrix()
+
+     for( i in 1:stilx){
+
+             mx1 <- mean(x[,i])
+             mx2 <- mean(y[,i])
+             vx1 <- var(x[,i])
+             vx2 <- var(y[,i])
+
+             ee  <- (vx1/n1)+(vx2/n2)
+             sdw <- sqrt(ee)
+             ti[i]   <- (mx1 - mx2)/sdw
+             dfa <-  ee^2
+             dfp <- ( ( vx1 / n1 )^2 ) / ( n1 -1) + ( ( vx2/ n2 )^2 ) / ( n2 -1 )
+             df[i]  <-  dfa/dfp
+             pv[i]   <- 2 * (1 - pt(abs(ti[i]),df[i]))
+      }
+
+  out <- list(ti=ti, df= df , pv=pv)
+  out
+}
+
+
+## Pavlos
+
+i<- 1
+while (i< dim(y)[2] ) {
+
+   nx <- length(x[,i])
+   ny <- length(y[,i])
+   xbar <- mean(x[,i])
+   ybar <- mean(y[,i])
+   st2x <- var(x[,i])
+   st2y <- var(y[,i])
+   fx <- st2x / nx
+   fy <- st2y / ny
+   sdelta <- sqrt(fx + fy)
+   tstt[i] <- (xbar-ybar)/sdelta
+
+   dftstt[i] <- sdelta^4/( fx/(nx-1) +  fy/(ny-1) )
+
+   pval[i] <- 2 * ( 1 - pt(abs(tstt[i]),dftstt[i]) )
+
+   i <- i+1
+} 
+
+
+## Christos
+ts <- function(x, y) {
+ ti <- NULL
+ p <- NULL
+ defre <- NULL 
+ n1 <- dim(x)[1]
+ n2 <- dim(y)[1]
+
+ for (i in 1:dim(x)[2]) {
+
+  b1 <- x[, i]
+  b2 <- y[, i]
+
+  v1 <- Var(b1)
+  v2 <- Var(b2)
+  s_d <- sqrt( v1/n1 + v2/n2) # s_delta
+
+  defre[i] <- s_d^4 / ( ( ( v1 / n1)^2 / (n1 - 1) ) + ( (v2 / n2)^2 / (n2 - 1) )  )
+
+  ti[i] <- ( mean(b1) - mean(b2) ) / s_d
+
+  p[i] <- 2*( 1 - pt( abs( ti[i]) , defre[i])  )
+ }
+ cbind(ti, defre, p)
+
+} 
+
+
+library(Rfast)
+exo <- function(x, y) {
+  nx <- dim(x)[1]
+  ny <- sample(y)[2]
+  mx <- colmeans(x)
+  my <- colmeans(y)
+  vx <- colVars(x)
+  vy <- colVars(y)
+  stat <- ( mx - my ) / sqrt(vx / nx + vy / ny)
+  defre <- 
+  pvalue <-
+  result <- cbind(stat, defre, pvalue)
+  colnames(a) <- c("stat", "degrees of freedom", "p-value")
+  result
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
